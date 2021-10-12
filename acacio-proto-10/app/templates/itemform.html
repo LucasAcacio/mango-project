@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!-- 
+Design register pure CSS
+Developed by @mrjopino
+-->
+<p class="texto">Add item page</p>
+<div class="Registro">
+<form method="post" action="">
+
+<span class="fontawesome-user"></span><input type="text" name="name" placeholder="Nome da cultura" autocomplete="off"> 
+<span class="fontawesome-user"></span><input type="text" name="area" placeholder="Area plantada (m²)" autocomplete="off">
+<span class="fontawesome-user"></span><input type="text" name="qpessoas" placeholder = "Quantidade de mão de obra" autocomplete="off">
+<span class="fontawesome-user"></span><input type="text" name="dplantada" placeholder="Data da plantação (YYYY-MM-DD)" autocomplete="off"> 
+<span class="fontawesome-user"></span><input type="text" name="dcolheita" placeholder="Data da colheita (YYYY-MM-DD)" autocomplete="off"> 
+<span class="fontawesome-user"></span><input type="text" name="qplantada" placeholder="Quantidade plantada (kg)" autocomplete="off"> 
+<span class="fontawesome-user"></span><input type="text" name="qcolheita" placeholder="Quantidade colhida (kg)" autocomplete="off">
+<span class="fontawesome-user"></span><input type="text" name="defensivo" placeholder="Usou defensivos agricolas? (s/n)" autocomplete="off">   
+<input type="submit" value="Adicionar cultura" title="submit">  
+  
+</form>
+<!-- partial -->
+  
+</body>
+</html>

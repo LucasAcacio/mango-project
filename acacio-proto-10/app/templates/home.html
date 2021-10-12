@@ -1,0 +1,9 @@
+{% if current_user.is_authenticated %}
+  Hi {{ current_user.name }}!
+
+{% else %}
+    <div>
+        <h1>Visitante</h1>
+        <p>Esste texto aparece caso você não esteja logado.</p>
+    </div>
+{% endif %}

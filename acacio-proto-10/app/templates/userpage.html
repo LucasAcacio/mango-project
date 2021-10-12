@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Plantações de {{ current_user.name }}:</h1>
+  <table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Area m²</th>
+        <th>Quantidade de trabalhadores</th>
+        <th>Data de platação</th>
+        <th>Data de colheita</th>
+        <th>Quantidade plantada</th>
+        <th>Quantidade colhida</th>
+        <th>Defensivos agricolas foram usados</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.cultura_name }}</td>
+            <td>{{ item.aream2 }}</td>
+            <td>{{ item.quantidade_pessoas }}</td>
+            <td>{{ item.data_plantacao }}</td>
+            <td>{{ item.data_colheita }}</td>
+            <td>{{ item.quantitade_plantada }}</td>
+            <td>{{ item.quantidade_colheita }}</td>
+            <td>{{ item.defensivos_agricolas }}</td>
+            <td>
+                <a href="{{ url_for('edititem', pid=item.id) }}"><i class="btn btn-success">Edit</i></a>
+            </td>
+            <td>
+                <a href="{{ url_for('deleteitem', pid=item.id) }}"><i class="btn btn-danger">Delete</i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  <a href="/itemform"><i class="btn btn-primary">Adicionar cultura</i></a>
+{% endblock %}

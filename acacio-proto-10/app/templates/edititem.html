@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Design register pure CSS</title>
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!-- 
+Design register pure CSS
+Developed by @mrjopino
+-->
+<p class="texto">Edit item page</p>
+<div class="Registro">
+<form method="post" action="">
+
+    <span class="fontawesome-user"></span><input type="text" name="name" placeholder="{{ data.cultura_name }}" autocomplete="off"> 
+    <span class="fontawesome-user"></span><input type="text" name="area" placeholder="{{ data.aream2 }}" autocomplete="off">
+    <span class="fontawesome-user"></span><input type="text" name="qpessoas" placeholder = "{{ data.quantidade_pessoas }}" autocomplete="off">
+    <span class="fontawesome-user"></span><input type="text" name="dplantada" placeholder="{{ data.data_plantacao }}" autocomplete="off"> 
+    <span class="fontawesome-user"></span><input type="text" name="dcolheita" placeholder="{{ data.data_colheita }}" autocomplete="off"> 
+    <span class="fontawesome-user"></span><input type="text" name="qplantada" placeholder="{{ data.quantitade_plantada }}" autocomplete="off"> 
+    <span class="fontawesome-user"></span><input type="text" name="qcolheita" placeholder="{{ data.quantidade_colheita }}" autocomplete="off">
+    <span class="fontawesome-user"></span><input type="text" name="defensivo" placeholder="{{ data.defensivos_agricolas }}" autocomplete="off">   
+    <input type="submit" value="Terminar edição" title="submit">  
+
+</form>
+<!-- partial -->
+  
+</body>
+</html>
