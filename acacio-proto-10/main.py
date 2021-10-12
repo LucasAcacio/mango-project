@@ -5,7 +5,7 @@ from flask_login import login_user, logout_user, current_user
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', data=Item.query.all())
 
 @app.route('/register', methods=['GET','POST'])
 def register():
@@ -17,6 +17,8 @@ def register():
         user = User(name, email, password)
         db.session.add(user)
         db.session.commit()
+
+        return redirect(url_for('homepage'))
 
     return render_template('register_users.html')
 
@@ -76,6 +78,8 @@ def itemform():
 
                 db.session.add(new)
                 db.session.commit()
+
+                return redirect(url_for('userpage'))
 
         return render_template('itemform.html')
 

@@ -1,9 +1,39 @@
-{% if current_user.is_authenticated %}
-  Hi {{ current_user.name }}!
+{% extends "base.html" %}
 
-{% else %}
-    <div>
-        <h1>Visitante</h1>
-        <p>Esste texto aparece caso você não esteja logado.</p>
-    </div>
-{% endif %}
+{% block content %}
+<h1> HOME PAGE </h1>
+  
+  <a href="/register"><i class="btn btn-primary">Registrar</i></a>
+
+  <a href="/login"><i class="btn btn-secondary">Entrar</i></a>
+
+<h1>Plantações Gerais:</h1>
+  <table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Area m²</th>
+        <th>Quantidade de trabalhadores</th>
+        <th>Data de platação</th>
+        <th>Data de colheita</th>
+        <th>Quantidade plantada</th>
+        <th>Quantidade colhida</th>
+        <th>Defensivos agricolas foram usados</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.cultura_name }}</td>
+            <td>{{ item.aream2 }}</td>
+            <td>{{ item.quantidade_pessoas }}</td>
+            <td>{{ item.data_plantacao }}</td>
+            <td>{{ item.data_colheita }}</td>
+            <td>{{ item.quantitade_plantada }}</td>
+            <td>{{ item.quantidade_colheita }}</td>
+            <td>{{ item.defensivos_agricolas }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
