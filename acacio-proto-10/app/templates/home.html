@@ -1,13 +1,11 @@
+
 {% extends "base.html" %}
 
 {% block content %}
-<h1> HOME PAGE </h1>
-  
-  <a href="/register"><i class="btn btn-primary">Registrar</i></a>
 
-  <a href="/login"><i class="btn btn-secondary">Entrar</i></a>
+<div class="p-3 mb-2 bg-light text-dark">
+  <h2 style="text-align:center;">Plantações Totais:</h2>
 
-<h1>Plantações Gerais:</h1>
   <table id="data" class="table table-striped">
     <thead>
       <tr>
@@ -34,6 +32,12 @@
             <td>{{ item.defensivos_agricolas }}</td>
         </tr>
         {% endfor %}
+
+        <div>
+          <h2>Tempo hoje:</h2>
+          <span>{{ weather }}</span>
+        </div>
     </tbody>
   </table>
+</div>
 {% endblock %}

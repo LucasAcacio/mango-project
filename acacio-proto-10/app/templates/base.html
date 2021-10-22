@@ -2,14 +2,21 @@
 <html>
   <head>
     <title>{{ title }}</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   </head>
-  <body>
+
+    <h1 style="text-align:center;">
+      <span >Mango project</span> 
+        <a href="/register"><button class="btn btn-primary" style="text-align:right;">Registrar</button></a>
+        <a href="/login"><button class="btn btn-secondary" style="text-align:right;">Entrar</button></a>
+    </h1>
+
+  <body class=" p-3 mb-2 bg-dark text-white">
     <div class="container">
-      <h1>{{ title }}</h1>
-      <hr>
+      
       {% block content %}{% endblock %}
+
     </div>
-    {% block scripts %}{% endblock %}
   </body>
 </html>

@@ -1,4 +1,6 @@
-from re import S
+from datetime import date
+import requests
+import json
 
 from sqlalchemy.sql.schema import ForeignKey
 from app import db, login_manager
@@ -12,6 +14,18 @@ def get_user(user_id):
 def get_cultura(item_id):
     return Item.query.filter_by(id=item_id).first()
 
+def get_weather(city):
+    item = Weather.query.filter_by(city=city, data=date.today())
+    if item:
+        return item
+    else:
+        weather = Weather(city)
+        db.session.add(weather)
+        db.session.commit()
+
+        return Weather.query.filter_by(city=city, date=date.today())
+
+ ##############USER CLASS###################
 class User(db.Model, UserMixin):
     __tablename__ = 'login'
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -27,6 +41,7 @@ class User(db.Model, UserMixin):
     def verify_password(self, password):
         return check_password_hash(self.password, password)
 
+#################ITEM CLASS#####################
 class Item(db.Model):
     __tablename__ = 'cultura'
     login_id = db.Column(db.Integer, ForeignKey(User.id))
@@ -79,3 +94,55 @@ class Item(db.Model):
             self.defensivos_agricolas = True
         if defensivo_agricola == 'n' or 'nao':
             self.defensivos_agricolas = False
+
+#############WEATHER CLASS################
+class Weather(db.Model):
+    __tablename__ = 'weather'
+    city = db.Column(db.String(128), primary_key=True, nullable=False)
+    weather = db.Column(db.String(128), nullable=False)
+    temp_min = db.Column(db.String(128), nullable=False)
+    temp_max = db.Column(db.Float, nullable=False)
+    humidity = db.Column(db.Integer, nullable=False)
+    data = db.Column(db.Date, nullable=False)
+
+    def __init__(self, city):
+        attributes = getWeather(city)
+        self.city = attributes.get('city')
+        self.weather = attributes.get('description')
+        self.temp_min = attributes.get('temp_min')
+        self.temp_max = attributes.get('temp_max')
+        self.humidity = attributes.get('humidity')
+        self.data = date.today()
+
+    def getWeather(name):
+        url = "https://community-open-weather-map.p.rapidapi.com/weather"
+
+        querystring = {"q":f"{name},br","lat":"0","lon":"0","callback":"test","id":"2172797","lang":"null","units":"metric","mode":"xml"}
+
+        headers = {
+            'x-rapidapi-host': "community-open-weather-map.p.rapidapi.com",
+            'x-rapidapi-key': "8e6bb6cc83mshce79fd442877581p1c343fjsnf6c9e81e8e16"
+        }
+
+        response = requests.request("GET", url, headers=headers, params=querystring)
+
+        json_string = response.text[5:-1]
+        obj = json.loads(json_string)
+
+        weather = obj.get('weather')
+        main = obj.get('main')
+        name = obj.get('name')
+
+        ##RETURNING WANTED ATTRIBUTES
+        attributes = {'city': f"{name}",
+                    'description': f"{weather[0].get('description')}", 
+                    'temp_min': f"{main.get('temp_min')}", 
+                    'temp_max': f"{main.get('temp_max')}", 
+                    'humidity': f"{main.get('humidity')}"}
+
+        return attributes
+# city = name 
+# weather = weather[0].get(description)
+# temp_min = main.get('temp_min')
+# temp_max = main.get('temp_max')
+# humidity = main.get('humidity')

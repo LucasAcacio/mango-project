@@ -12,7 +12,7 @@ def front_page():
 
 @app.route('/user_add')
 def add_user_page():
-    return render_template('user_add.html')
+    return render_template('user_add.html')   
 
 @app.route('/add', methods=['POST'])
 def add_user():
@@ -41,6 +41,60 @@ def add_user():
     finally:
         cursor.close() 
         conn.close()
+
+@app.route('/user_login', methods=['POST'])
+def login_try():
+    conn = None
+    cursor = None
+    try:
+        input_email = request.form['email']
+        input_password = request.form['password']
+        if input_email and input_password and request.method == 'POST':
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+            cursor.execute("SELECT * FROM agricultor WHERE email=%s", input_email)
+            row = cursor.fetchone()
+            if input_password in row["senha"]:
+                return redirect('/user_page')
+            else:
+                print("ERROR - Invalid password")
+                return redirect('/') 
+
+    except Exception as e:
+        print(e)
+
+    finally:
+        cursor.close() 
+        conn.close()
+
+@app.route('/user_page',)
+def user_page():
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM cultura")
+        rows = cursor.fetchall()
+        table = Results(rows)
+        table.border = True
+        return render_template('user_page.html', table=table)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        conn.close()
+
+@app.route('/plant_add_request/<int:id>', methods=['POST'])
+def add_plant():
+    
+
+@app.route('/plant_edit_request/<int:id>', methods=['POST'])
+def edit_plant():
+
+
+@app.route('/plant_delete_request/<int:id>', methods=['POST'])
+def delete_plant():
 
 if __name__ == "__main__":
     app.run()

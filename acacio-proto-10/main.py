@@ -1,11 +1,16 @@
 from app import app, db
 from flask import render_template, request, redirect, url_for
-from app.models import User, Item
+from app.models import User, Item, Weather, get_weather
 from flask_login import login_user, logout_user, current_user
+
+
+@app.route('/teste')
+def teste():
+    return render_template('teste.html')
 
 @app.route('/')
 def home():
-    return render_template('home.html', data=Item.query.all())
+    return render_template('home.html', data=Item.query.all(), weather=get_weather('recife'))
 
 @app.route('/register', methods=['GET','POST'])
 def register():
