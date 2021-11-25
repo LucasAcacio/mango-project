@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { TabBar, TabView, SceneMap } from 'react-native-tab-view';
 import { FAB } from 'react-native-paper';
@@ -8,17 +8,58 @@ import Search from '../components/Search';
 import PlantCard from '../components/PlantCard';
 import HistoryCard from '../components/HistoryCard';
 import NewsCard from '../components/NewsCard';
+import * as SQLite from 'expo-sqlite';
 
 const windowWidth = Dimensions.get("window").width;
 
+function Items() {
+    const [items, setItems] = React.useState(null);
+  
+	const db = SQLite.openDatabase("mango_plant.db");
+
+    React.useEffect(() => {
+      db.transaction((tx) => {
+        tx.executeSql("select * from plant", [],  (_, { rows: { _array } }) => setItems(_array));
+      });
+    }, []);
+  
+  
+    if (items === null || items.length === 0) {
+      return null;
+    }
+  
+    return (
+		<View style={styles.sectionContainer}>
+		{items.map(({ name, culture }) => (
+		 <PlantCard 
+			name={"Plantação de " + name} 
+			plant={culture} 
+			image={plantsImages.manga} 
+			length_="10" 
+			width="25" 
+			description="Descrição" 
+			water="20" 
+			time="8 meses" 
+			date="19/08/2021" 
+			seeds="10" />		
+		))}
+	  </View>
+    );
+  }
+
+  function useForceUpdate() {
+    const [value, setValue] = useState(0);
+    return [() => setValue(value + 1), value];
+  }
+
 function FirstRoute() {
 	const navigation = useNavigation();
+
 	return (
 		<View style={{ flex: 1 }}>
 			<ScrollView>
 				<Search />
-				<PlantCard name={"Plantação X"} plant={"Manga"} image={plantsImages.manga} length_="10" width="25" description="Descrição" water="20" time="8 meses" date="19/08/2021" seeds="10" />
-				<PlantCard name={"Plantação Y"} plant={"Milho"} image={plantsImages.milho} length_="10" width="25" description="Descrição" water="20" time="4 meses" date="19/08/2021" seeds="10" />
+				<Items/>
 				<View style={{ height: 24 }} />
 			</ScrollView>
 
@@ -26,6 +67,7 @@ function FirstRoute() {
 				<FAB style={styles.newPlantBtn} small={false} icon="plus" color='white' onPress={() => navigation.navigate('AddPlant')}/>
 			</View>
 			<Text style={styles.newPlantText}>Nova Plantação</Text>
+			
 		</View>
 	)
 };

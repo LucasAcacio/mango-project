@@ -1,8 +1,26 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Alert, TextInput, ScrollView} from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableHighlight, TouchableOpacity, Alert, TextInput, ScrollView, Platform} from 'react-native';
 import CheckBox from 'expo-checkbox';
 // import { useFonts, RobotoCondensed_400Regular } from '@expo-google-fonts/roboto-condensed';
 import { useNavigation } from '@react-navigation/native';
+import * as SQLite from 'expo-sqlite';
+
+function openDatabase() {
+    if (Platform.OS === "web") {
+        return {
+            transaction: () => {
+                return {
+                    executeSql: () => {},
+                };
+            },
+        };
+    }
+
+    const db = SQLite.openDatabase("mango_plant.db");
+    return db;
+}
+
+const db = openDatabase();
 
 function AddPlant() {
     // let [fontsLoaded] = useFonts({RobotoCondensed_400Regular});
@@ -22,6 +40,37 @@ function AddPlant() {
 
     const navigation = useNavigation();
 
+    const [name, setName] = React.useState(null);
+    const [culture, setCulture] = React.useState(null);
+    const [height, setHeight] = React.useState(null);
+    const [width, setWidth] = React.useState(null);
+    const [seed, setSeed] = React.useState(null);
+    const [notes, setNotes] = React.useState(null);
+
+    React.useEffect(() => {
+        db.transaction((tx) => {
+        tx.executeSql(
+            "create table if not exists plant (id integer primary key not null, name text, culture text, height text, width text, seed text, notes text, water text);"
+        );
+        });
+    }, []);
+
+    const add = (name, culture) => {
+        if (name === null || name === "") {
+          return false;
+        }
+    
+        db.transaction(
+          (tx) => {
+            tx.executeSql("insert into plant (name, culture, height, width, seed, notes) values (?, ?, ?, ?, ?, ?)", [name, culture, height, width, seed, notes]);
+            tx.executeSql("select * from plant", [], (_, { rows }) =>
+              console.log(JSON.stringify(rows))
+            );
+          },
+          null,
+        );
+      };
+
     return (
         <ScrollView style={styles.addPlantContainer}>
             <View style={styles.addPlantTop}>
@@ -32,7 +81,9 @@ function AddPlant() {
             </View>
             <View style={styles.addPlantBody}>
                 <Text style={styles.addPlantTextBody}>  Nome da Plantação:</Text>
-                <TextInput style={styles.addPlantTextInput}/>
+                <TextInput 
+                    onChangeText={(name) => setName(name)}
+                    style={styles.addPlantTextInput}/>
 
                 <Text style={styles.addPlantTextBody}>  Cultura(s):</Text>
                 <View style={styles.addPlantOptionContainer}>
@@ -41,7 +92,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox0}expo
-                                onValueChange={(newValue) => setToggleCheckBox0(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox0(newValue); setCulture('Abobrinha')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Abobrinha</Text>
@@ -50,7 +101,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox1}
-                                onValueChange={(newValue) => setToggleCheckBox1(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox1(newValue); setCulture('Milho')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Milho</Text>
@@ -59,7 +110,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox2}expo
-                                onValueChange={(newValue) => setToggleCheckBox2(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox2(newValue); setCulture('Carambola')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Carambola</Text>
@@ -68,7 +119,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox3}expo
-                                onValueChange={(newValue) => setToggleCheckBox3(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox3(newValue); setCulture('Ciriguela')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Ciriguela</Text>
@@ -77,7 +128,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox4}expo
-                                onValueChange={(newValue) => setToggleCheckBox4(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox4(newValue); setCulture('Mandioca')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Mandioca</Text>
@@ -86,7 +137,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox5}expo
-                                onValueChange={(newValue) => setToggleCheckBox5(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox5(newValue); setCulture('Manga')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Manga</Text>
@@ -106,16 +157,16 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox7}expo
-                                onValueChange={(newValue) => setToggleCheckBox7(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox7(newValue); setCulture('Batata')}}
                                 style={styles.addPlantCheckbox}
                             />
-                            <Text style={styles.addPlantTextOption}>Milho</Text>
+                            <Text style={styles.addPlantTextOption}>Batata</Text>
                         </View>
                         <View style={{flexDirection:'row', marginVertical: 5}}>
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox8}
-                                onValueChange={(newValue) => setToggleCheckBox8(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox8(newValue); setCulture('Morango')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Morango</Text>
@@ -124,7 +175,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox9}expo
-                                onValueChange={(newValue) => setToggleCheckBox9(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox9(newValue); setCulture('Pepino')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Pepino</Text>
@@ -133,7 +184,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox10}expo
-                                onValueChange={(newValue) => setToggleCheckBox10(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox10(newValue); setCulture('Tomate')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Tomate</Text>
@@ -142,7 +193,7 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox11}expo
-                                onValueChange={(newValue) => setToggleCheckBox11(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox11(newValue); setCulture('Trigo')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Trigo</Text>
@@ -151,27 +202,37 @@ function AddPlant() {
                             <CheckBox
                                 disabled={false}
                                 value={toggleCheckBox12}expo
-                                onValueChange={(newValue) => setToggleCheckBox12(newValue)}
+                                onValueChange={(newValue) => {setToggleCheckBox12(newValue); setCulture('Uva')}}
                                 style={styles.addPlantCheckbox}
                             />
                             <Text style={styles.addPlantTextOption}>Uva</Text>
                         </View>
                     </View>
                 </View>
-                <TextInput style={styles.addPlantTextInput}/>
+                <TextInput 
+                    onChangeText={(text) => setCulture(text)}
+                    style={styles.addPlantTextInput}/>
                 <Text style={styles.addPlantTextBody}>  Tamanho</Text>
                 <View style={styles.addPlantSizeBox}>
-                    <TextInput style={styles.addPlantTextInput3}/>
+                    <TextInput 
+                        onChangeText={(name) => setHeight(name)}
+                        style={styles.addPlantTextInput3}/>
                     <Image style={styles.addPlantSizeIconX} source={require('../assets/images_source/iconx.png')}/>
-                    <TextInput style={styles.addPlantTextInput3}/>
+                    <TextInput 
+                        onChangeText={(name) => setWidth(name)}
+                        style={styles.addPlantTextInput3}/>
                 </View>
-                <Text style={styles.addPlantTextBody}>  Quantar sementes plantadas?</Text>
-                <TextInput style={styles.addPlantTextInput}/>
+                <Text style={styles.addPlantTextBody}>  Quantas sementes plantadas?</Text>
+                <TextInput 
+                    onChangeText={(name) => setSeed(name)}
+                    style={styles.addPlantTextInput}/>
 
                 <Text style={styles.addPlantTextBody}>  Notas:</Text>
-                <TextInput style={styles.addPlantTextInput2}/>
+                <TextInput 
+                    onChangeText={(name) => setNotes(name)}
+                    style={styles.addPlantTextInput2}/>
             </View>
-            <TouchableOpacity style={styles.addPlantButton} onPress={() => navigation.navigate('Main', {username:"temporary"})}>
+            <TouchableOpacity style={styles.addPlantButton} onPress={() => {add(name, culture, height, width, seed, notes); navigation.navigate('Main', {username:"temporary"})}}>
                 <Text style={styles.addPlantButtonText}>Adicionar Plantação</Text>
             </TouchableOpacity>
         </ScrollView>
@@ -270,7 +331,8 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         padding: 10,
         margin: 5,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        alignItems:'flex-start'
     },
     addPlantTextInput3: {
         width: "37%",
