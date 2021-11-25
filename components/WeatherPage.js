@@ -1,12 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image} from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 // import { useFonts, RobotoCondensed_400Regular } from '@expo-google-fonts/roboto-condensed';
+import { useNavigation } from '@react-navigation/native';
 
 function WeatherPage() {
     // let [fontsLoaded] = useFonts({RobotoCondensed_400Regular});
+    const navigation = useNavigation();
 
     return(
         <View style={styles.weatherContainer}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Image style={styles.iconBack} source={require('../assets/images_source/arrowleftwhite.png')}/> 
+            </TouchableOpacity>
             <Text style={styles.weatherText}>Previsão para hoje:</Text>
             <View style={styles.weatherToday}>
                 <Image style={styles.weatherIconMain} source={require('../assets/images_source/rainy.png')}/>
@@ -48,7 +53,8 @@ const styles = StyleSheet.create({
     },  
     weatherIconMain: {
         width: 100,
-        height: 120,
+        height: 100,
+        alignSelf:'center'
     },
     weatherIconPredict: {
         width: 60,
@@ -83,7 +89,13 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         margin: 10,
         backgroundColor:"rgba(0, 0, 0, 0.1)"
-    }
+    },
+    iconBack: {
+        width: 40,
+        height: 30,
+        alignSelf:'flex-start',
+        marginBottom:16
+    },
 });
 
 export default WeatherPage
