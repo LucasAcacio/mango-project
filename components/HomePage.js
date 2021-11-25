@@ -82,7 +82,9 @@ const styles = StyleSheet.create({
     },
     loginContainer: {
         backgroundColor: "#fff",
-        marginTop: 50
+        paddingTop: 50,
+        width: "100%",
+        height: "100%"
     },
     loginBody: {
         marginHorizontal: 32,
