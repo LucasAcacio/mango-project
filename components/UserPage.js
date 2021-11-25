@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, Alert} from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 // import { useFonts, RobotoCondensed_400Regular } from '@expo-google-fonts/roboto-condensed';
 
@@ -9,6 +9,9 @@ function UserPage({route}) {
 
     return(
         <View style={styles.userContainer}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Image style={styles.iconBack} source={require('../assets/images_source/arrowleftwhite.png')}/> 
+            </TouchableOpacity>
             <View style={styles.userViewContainer}>
                 <View style={styles.userNameArea}>
                     <Text style={styles.userText}>{route.params.username}</Text>
@@ -53,6 +56,11 @@ const styles = StyleSheet.create({
         marginTop: 40,
         flexDirection: 'row',
         justifyContent: 'center'
+    },
+    iconBack: {
+        width: 40,
+        height: 30,
+        alignSelf:'flex-start',
     },
 });
 
