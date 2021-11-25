@@ -22,10 +22,10 @@ function FirstRoute() {
 				<View style={{ height: 24 }} />
 			</ScrollView>
 
-			<TouchableOpacity style={styles.fabParent} onPress={() => navigation.navigate('AddPlant')}>
-				<FAB style={styles.fab} small={false} icon="plus" color='white' />
-				<Text style={styles.fabText}>Nova Plantação</Text>
-			</TouchableOpacity>
+			<View style={styles.newPlant} >
+				<FAB style={styles.newPlantBtn} small={false} icon="plus" color='white' onPress={() => navigation.navigate('AddPlant')}/>
+			</View>
+			<Text style={styles.newPlantText}>Nova Plantação</Text>
 		</View>
 	)
 };
@@ -149,21 +149,19 @@ const styles = StyleSheet.create({
 		maxHeight: 2,
 		marginTop: 20
 	},
-	fab: {
+	newPlantBtn: {
 		backgroundColor:'#FF9E2C',
-		marginRight: 42,
-		marginBottom: 46,
 	},
-	fabParent: {
+	newPlant: {
 		position:'absolute',
-		right:0,
-		bottom:0,
+		right:32,
+		bottom:32,
 	},
-	fabText: {
+	newPlantText: {
 		position:'absolute',
-		marginTop: 60,
-		marginLeft:-15,
-		fontSize: 12,
-		lineHeight: 14,
+		right:22,
+		bottom:16,
+		fontSize:12,
+		lineHeight:14,
 	}
 });
